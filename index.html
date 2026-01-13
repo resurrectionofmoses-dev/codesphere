@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeSphere AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0KOVEMeaMurLxlpHCzU+q5TOqQTJ9gsMvG1OKHIZjQHzFP/UEU/BC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
+    "jszip": "https://esm.sh/jszip@3.10.1",
+    "react-katex": "https://esm.sh/react-katex@3.0.1",
+    "katex": "https://esm.sh/katex@0.16.9",
+    "uuid": "https://esm.sh/uuid@9.0.1"
+  }
+}
+</script>
+<style>
+  :root {
+    --theme-color-main: #f59e0b; /* amber-500 */
+    --theme-color-text: #fbbf24; /* amber-400 */
+    --theme-color-bg-light: rgba(245, 158, 11, 0.2);
+    --glass-bg: rgba(22, 34, 51, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+  [data-theme="learn"] {
+    --theme-color-main: #3b82f6; /* blue-500 */
+    --theme-color-text: #60a5fa; /* blue-400 */
+    --theme-color-bg-light: rgba(59, 130, 246, 0.2);
+  }
+  [data-theme="build"] {
+    --theme-color-main: #f59e0b; /* amber-500 */
+    --theme-color-text: #fbbf24; /* amber-400 */
+    --theme-color-bg-light: rgba(245, 158, 11, 0.2);
+  }
+  [data-theme="refactor"] {
+    --theme-color-main: #8b5cf6; /* violet-500 */
+    --theme-color-text: #a78bfa; /* violet-400 */
+    --theme-color-bg-light: rgba(139, 92, 246, 0.2);
+  }
+  [data-theme="debug"] {
+    --theme-color-main: #f43f5e; /* rose-500 */
+    --theme-color-text: #fb7185; /* rose-400 */
+    --theme-color-bg-light: rgba(244, 63, 94, 0.2);
+  }
+  [data-theme="custom"] {
+    --theme-color-main: #06b6d4; /* cyan-500 */
+    --theme-color-text: #22d3ee; /* cyan-400 */
+    --theme-color-bg-light: rgba(6, 182, 212, 0.2);
+  }
+  [data-theme="squad"] {
+    --theme-color-main: #22c55e; /* green-500 */
+    --theme-color-text: #4ade80; /* green-400 */
+    --theme-color-bg-light: rgba(34, 197, 94, 0.2);
+  }
+  [data-theme="codesphere"] {
+    --theme-color-main: #ec4899; /* pink-500 */
+    --theme-color-text: #f472b6; /* pink-400 */
+    --theme-color-bg-light: rgba(236, 72, 153, 0.2);
+  }
+  [data-theme="logic"] {
+    --theme-color-main: #14b8a6; /* teal-500 */
+    --theme-color-text: #2dd4bf; /* teal-400 */
+    --theme-color-bg-light: rgba(20, 184, 166, 0.2);
+  }
+  [data-theme="microcheck"] {
+    --theme-color-main: #84cc16; /* lime-500 */
+    --theme-color-text: #a3e636; /* lime-400 */
+    --theme-color-bg-light: rgba(132, 204, 22, 0.2);
+  }
+  [data-theme="nanolinter"] {
+    --theme-color-main: #6366f1; /* indigo-500 */
+    --theme-color-text: #818cf8; /* indigo-400 */
+    --theme-color-bg-light: rgba(99, 102, 241, 0.2);
+  }
+  [data-theme="academic"] {
+    --theme-color-main: #9f1239; /* rose-800 */
+    --theme-color-text: #e11d48; /* rose-600 */
+    --theme-color-bg-light: rgba(159, 18, 57, 0.2);
+  }
+  [data-theme="templar"] {
+    --theme-color-main: #d97706; /* amber-600 */
+    --theme-color-text: #f59e0b; /* amber-500 */
+    --theme-color-bg-light: rgba(217, 119, 6, 0.2);
+  }
+  [data-theme="bountytemplar"] {
+    --theme-color-main: #0284c7; /* sky-600 */
+    --theme-color-text: #0ea5e9; /* sky-500 */
+    --theme-color-bg-light: rgba(2, 132, 199, 0.2);
+  }
+  [data-theme="quantumguardian"] {
+    --theme-color-main: #4f46e5; /* indigo-600 */
+    --theme-color-text: #6366f1; /* indigo-500 */
+    --theme-color-bg-light: rgba(79, 70, 229, 0.2);
+  }
+  [data-theme="omegacoder"] {
+    --theme-color-main: #a21caf; /* fuchsia-700 */
+    --theme-color-text: #c026d3; /* fuchsia-600 */
+    --theme-color-bg-light: rgba(162, 28, 175, 0.2);
+  }
+  [data-theme="hope"] {
+    --theme-color-main: #eab308; /* yellow-500 */
+    --theme-color-text: #facc15; /* yellow-400 */
+    --theme-color-bg-light: rgba(234, 179, 8, 0.2);
+  }
+  
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #2d3748; /* slate-800 */
+    font-family: 'Comic Neue', cursive;
+    font-weight: 700;
+  }
+  
+  .font-comic-header {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 2px;
+    -webkit-text-stroke: 1px black;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #4a5568;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #a0aec0;
+    border-radius: 2px;
+    border: 3px solid #000;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #cbd5e0;
+  }
+
+  .comic-panel {
+    background-color: #4a5568; /* slate-700 */
+    border: 3px solid #000;
+    box-shadow: 5px 5px 0px #000;
+    border-radius: 0.75rem;
+  }
+
+  .comic-panel-light {
+    background-color: #e2e8f0; /* slate-200 */
+    border: 3px solid #000;
+    box-shadow: 5px 5px 0px #000;
+    border-radius: 0.75rem;
+  }
+
+  .comic-button {
+    border: 3px solid #000 !important;
+    box-shadow: 4px 4px 0px #000 !important;
+    transition: all 0.1s ease-out !important;
+    border-radius: 0.5rem !important;
+    font-weight: 700 !important;
+  }
+  
+  .comic-button:active {
+    transform: translate(4px, 4px) !important;
+    box-shadow: none !important;
+  }
+  .comic-button:disabled {
+    opacity: 0.7;
+    transform: none !important;
+    box-shadow: 4px 4px 0px #000 !important;
+  }
+  
+  .message-bubble {
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.8);
+  }
+  
+  .message-bubble-user {
+    background-color: #bee3f8; /* blue-200 */
+    color: #1a202c;
+  }
+  
+  .message-bubble-model {
+    background-color: #e2e8f0; /* slate-200 */
+    color: #1a202c;
+  }
+
+  /* Remove glassmorphism */
+  .bg-glass {
+    background-color: transparent;
+    backdrop-filter: none;
+    border: none;
+  }
+  
+  .katex-display {
+    margin: 0.5em 0;
+    color: #1a202c;
+  }
+  .katex {
+    color: #1a202c;
+  }
+
+</style>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

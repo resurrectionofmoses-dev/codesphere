@@ -1,0 +1,7 @@
+{
+  "name": "Copy of CodeSphere AI",
+  "description": "An AI-powered coding assistant to help you learn, build, and refactor code. Your personal coding network for tackling any project, big or small.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
